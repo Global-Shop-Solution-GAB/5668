@@ -1,0 +1,20 @@
+Program.Sub.Preflight.Start
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+'BN, Sept 5, 2019
+'This program will lock the Part,Rev at screen JBS0076A (Issue Material > Drop) and force users to use the part browser
+f.Intrinsic.Control.Try
+	v.Local.sError.Declare
+	
+	f.Intrinsic.Control.If(v.Caller.Hook,=,29610)
+		F.Intrinsic.UI.ChangeCallerProperty(Variable.Passed.000004,"LOCK",1)
+		F.Intrinsic.UI.ChangeCallerProperty(Variable.Passed.000033,"LOCK",1)			
+	f.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.Catch
+	F.Intrinsic.String.Build("Project: {0}{1}Subroutine: {2}{1}Subroutine called from:{6}{1}Error Occurred: {3}{1}Description: {4}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,v.Ambient.SubroutineCalledFrom,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	f.Intrinsic.Control.End
+F.Intrinsic.Control.EndTry
+Program.Sub.Main.End
